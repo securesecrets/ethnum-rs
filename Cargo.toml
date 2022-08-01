@@ -23,8 +23,11 @@ members = [
 ]
 
 [features]
+default = ["cosmwasm"]
+cosmwasm = ["cosmwasm-std"]
 llvm-intrinsics = ["ethnum-intrinsics"]
 
 [dependencies]
 ethnum-intrinsics = { version = "1", path = "intrinsics", optional = true }
+cosmwasm-std = { git = "https://github.com/scrtlabs/cosmwasm", branch = "secret", optional = true }
 serde = { version = "1", default-features = false, optional = true }

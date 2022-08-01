@@ -10,11 +10,51 @@ mod ops;
 pub use self::convert::AsU256;
 use crate::I256;
 use core::num::ParseIntError;
+use cosmwasm_std::Uint128;
+#[cfg(feature = "cosmwasm")]
+use cosmwasm_std::{Decimal256, Uint256};
 
 /// A 256-bit unsigned integer type.
 #[derive(Clone, Copy, Default, Eq, Hash, PartialEq)]
 #[repr(transparent)]
 pub struct U256(pub [u128; 2]);
+
+#[cfg(feature = "cosmwasm")]
+impl From<Uint128> for U256 {
+    fn from(u: Uint128) -> Self {
+        U256::new(u.u128())
+    }
+}
+
+#[cfg(feature = "cosmwasm")]
+#[allow(clippy::from_over_into)]
+impl Into<Uint256> for U256 {
+    fn into(self) -> Uint256 {
+        Uint256::from_be_bytes(self.to_be_bytes())
+    }
+}
+
+#[cfg(feature = "cosmwasm")]
+#[allow(clippy::from_over_into)]
+impl Into<Decimal256> for U256 {
+    fn into(self) -> Decimal256 {
+        Decimal256::new(Uint256::from_be_bytes(self.to_be_bytes()))
+    }
+}
+
+#[cfg(feature = "cosmwasm")]
+impl From<Uint256> for U256 {
+    fn from(u: Uint256) -> Self {
+        U256::from_be_bytes(u.to_be_bytes())
+    }
+}
+
+#[cfg(feature = "cosmwasm")]
+impl From<Decimal256> for U256 {
+    fn from(u: Decimal256) -> Self {
+        U256::from_be_bytes(u.atomics().to_be_bytes())
+    }
+}
 
 impl U256 {
     /// The additive identity for this integer type, i.e. `0`.
