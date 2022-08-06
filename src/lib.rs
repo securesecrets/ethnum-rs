@@ -26,7 +26,7 @@ mod error;
 mod fmt;
 mod int;
 pub mod intrinsics;
-#[cfg(feature = "serde")]
+#[cfg(feature = "original-serde")]
 pub mod serde;
 mod uint;
 

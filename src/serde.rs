@@ -9,6 +9,11 @@
 //! be used with `#[serde(with = "...")]`.
 //!
 //! TODO(nlordell): example!
+//! 
+//! In this fork, we just derive Serialize and Deserialize because we plan to only use this type
+//! to optimize math in smart contracts and read/write from/to storage via bincode serialization. If
+//! we were to serialize the numbers as Hexadecimal Strings, we would lose out on the bincode serialization benefits.
+
 
 use crate::{int::I256, uint::U256};
 use core::{
