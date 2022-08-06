@@ -26,7 +26,6 @@ members = [
 default = ["cosmwasm", "serde"]
 cosmwasm = ["cosmwasm-std"]
 llvm-intrinsics = ["ethnum-intrinsics"]
-serde = []
 
 [dependencies]
 ethnum-intrinsics = { version = "1", path = "intrinsics", optional = true }
