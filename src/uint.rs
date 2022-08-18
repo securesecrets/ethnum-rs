@@ -29,9 +29,24 @@ impl From<Uint128> for U256 {
 
 #[cfg(feature = "cosmwasm")]
 #[allow(clippy::from_over_into)]
+impl Into<Uint128> for U256 {
+    fn into(self) -> Uint128 {
+        Uint128::new(self.as_u128())
+    }
+}
+
+#[cfg(feature = "cosmwasm")]
+#[allow(clippy::from_over_into)]
 impl Into<Uint256> for U256 {
     fn into(self) -> Uint256 {
         Uint256::from_be_bytes(self.to_be_bytes())
+    }
+}
+
+#[cfg(feature = "cosmwasm")]
+impl From<Uint256> for U256 {
+    fn from(u: Uint256) -> Self {
+        U256::from_be_bytes(u.to_be_bytes())
     }
 }
 
@@ -40,13 +55,6 @@ impl Into<Uint256> for U256 {
 impl Into<Decimal256> for U256 {
     fn into(self) -> Decimal256 {
         Decimal256::new(Uint256::from_be_bytes(self.to_be_bytes()))
-    }
-}
-
-#[cfg(feature = "cosmwasm")]
-impl From<Uint256> for U256 {
-    fn from(u: Uint256) -> Self {
-        U256::from_be_bytes(u.to_be_bytes())
     }
 }
 
