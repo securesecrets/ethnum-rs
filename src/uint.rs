@@ -20,6 +20,9 @@ use serde::{Serialize, Deserialize};
 #[repr(transparent)]
 pub struct U256(pub [u128; 2]);
 
+/// Type alias for U256.
+pub type DecimalU256 = U256;
+
 #[cfg(feature = "cosmwasm")]
 impl From<Uint128> for U256 {
     fn from(u: Uint128) -> Self {
