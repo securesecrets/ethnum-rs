@@ -31,4 +31,5 @@ llvm-intrinsics = ["ethnum-intrinsics"]
 ethnum-intrinsics = { version = "1", path = "intrinsics", optional = true }
 cosmwasm-std = { git = "https://github.com/scrtlabs/cosmwasm", branch = "secret", optional = true }
 serde = { version = "1", default-features = false, optional = true }
+borsh = { version = "0.9.3" }
 schemars = "0.8.1"

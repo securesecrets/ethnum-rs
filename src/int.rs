@@ -7,14 +7,26 @@ mod fmt;
 mod iter;
 mod ops;
 
-use serde::{Serialize, Deserialize};
+use borsh::{BorshDeserialize, BorshSerialize};
+use serde::{Deserialize, Serialize};
 
 pub use self::convert::AsI256;
 use crate::uint::U256;
 use core::num::ParseIntError;
 
 /// A 256-bit signed integer type.
-#[derive(Clone, Copy, Default, Eq, Hash, PartialEq, Serialize, Deserialize)]
+#[derive(
+    Clone,
+    Copy,
+    Default,
+    Eq,
+    Hash,
+    PartialEq,
+    Serialize,
+    Deserialize,
+    BorshDeserialize,
+    BorshSerialize,
+)]
 #[repr(transparent)]
 pub struct I256(pub [i128; 2]);
 

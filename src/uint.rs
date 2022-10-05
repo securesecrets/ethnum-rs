@@ -9,14 +9,26 @@ mod ops;
 
 pub use self::convert::AsU256;
 use crate::I256;
+use borsh::{BorshDeserialize, BorshSerialize};
 use core::num::ParseIntError;
 use cosmwasm_std::Uint128;
 #[cfg(feature = "cosmwasm")]
 use cosmwasm_std::{Decimal256, Uint256};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 /// A 256-bit unsigned integer type.
-#[derive(Clone, Copy, Default, Eq, Hash, PartialEq, Serialize, Deserialize)]
+#[derive(
+    Clone,
+    Copy,
+    Default,
+    Eq,
+    Hash,
+    PartialEq,
+    Serialize,
+    Deserialize,
+    BorshDeserialize,
+    BorshSerialize,
+)]
 #[repr(transparent)]
 pub struct U256(pub [u128; 2]);
 
