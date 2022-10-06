@@ -24,6 +24,7 @@ mod macros {
     pub mod parse;
 }
 
+#[cfg(feature = "decimal-serde")]
 mod default_serde;
 mod error;
 mod fmt;

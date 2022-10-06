@@ -12,9 +12,21 @@ pub use self::convert::AsI256;
 use crate::uint::U256;
 use borsh::{BorshDeserialize, BorshSerialize};
 use core::num::ParseIntError;
+use serde::{Deserialize, Serialize};
 
 /// A 256-bit signed integer type.
-#[derive(Clone, Copy, Default, Eq, Hash, PartialEq, BorshDeserialize, BorshSerialize)]
+#[derive(
+    Clone,
+    Copy,
+    Default,
+    Eq,
+    Hash,
+    PartialEq,
+    Serialize,
+    Deserialize,
+    BorshDeserialize,
+    BorshSerialize,
+)]
 #[repr(transparent)]
 pub struct I256(pub [i128; 2]);
 
