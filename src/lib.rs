@@ -24,6 +24,7 @@ mod macros {
     pub mod parse;
 }
 
+mod default_serde;
 mod error;
 mod fmt;
 mod int;

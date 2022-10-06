@@ -15,21 +15,9 @@ use core::num::ParseIntError;
 use cosmwasm_std::Uint128;
 #[cfg(feature = "cosmwasm")]
 use cosmwasm_std::{Decimal256, Uint256};
-use serde::{Deserialize, Serialize};
 
 /// A 256-bit unsigned integer type.
-#[derive(
-    Clone,
-    Copy,
-    Default,
-    Eq,
-    Hash,
-    PartialEq,
-    Serialize,
-    Deserialize,
-    BorshDeserialize,
-    BorshSerialize,
-)]
+#[derive(Clone, Copy, Default, Eq, Hash, PartialEq, BorshDeserialize, BorshSerialize)]
 #[repr(transparent)]
 pub struct U256(pub [u128; 2]);
 
