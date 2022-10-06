@@ -2,7 +2,7 @@
 //! standard library API for `uN` types.
 
 use super::U256;
-use crate::{fmt, intrinsics};
+use crate::intrinsics;
 use core::{
     mem::{self, MaybeUninit},
     num::ParseIntError,
@@ -70,7 +70,7 @@ impl U256 {
     /// ```
     #[inline]
     pub fn from_str_radix(src: &str, radix: u32) -> Result<Self, ParseIntError> {
-        fmt::from_str_radix(src, radix, None)
+        crate::parse::from_str_radix(src, radix, None)
     }
 
     /// Returns the number of ones in the binary representation of `self`.
@@ -1109,6 +1109,28 @@ impl U256 {
         let mut result = MaybeUninit::uninit();
         let overflow = intrinsics::signed::usubc(&mut result, &self, &rhs);
         (unsafe { result.assume_init() }, overflow)
+    }
+
+    /// Computes the absolute difference between `self` and `other`.
+    ///
+    /// # Examples
+    ///
+    /// Basic usage:
+    ///
+    /// ```
+    /// # use ethnum::U256;
+    /// assert_eq!(U256::new(100).abs_diff(U256::new(80)), 20);
+    /// assert_eq!(U256::new(100).abs_diff(U256::new(110)), 10);
+    /// ```
+    #[must_use = "this returns the result of the operation, \
+                  without modifying the original"]
+    #[inline]
+    pub fn abs_diff(self, other: Self) -> Self {
+        if self < other {
+            other - self
+        } else {
+            self - other
+        }
     }
 
     /// Calculates the multiplication of `self` and `rhs`.

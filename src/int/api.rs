@@ -1,7 +1,7 @@
 //! Module containing integer aritimetic methods closely following the Rust
 //! standard library API for `iN` types.
 
-use crate::{fmt, intrinsics, I256, U256};
+use crate::{intrinsics, I256, U256};
 use core::{
     mem::{self, MaybeUninit},
     num::ParseIntError,
@@ -73,7 +73,7 @@ impl I256 {
     /// assert_eq!(I256::from_str_radix("A", 16), Ok(I256::new(10)));
     /// ```
     pub fn from_str_radix(src: &str, radix: u32) -> Result<Self, ParseIntError> {
-        fmt::from_str_radix(src, radix, None)
+        crate::parse::from_str_radix(src, radix, None)
     }
 
     /// Returns the number of ones in the binary representation of `self`.
@@ -1301,6 +1301,48 @@ impl I256 {
         let mut result = MaybeUninit::uninit();
         let overflow = intrinsics::signed::isubc(&mut result, &self, &rhs);
         (unsafe { result.assume_init() }, overflow)
+    }
+
+    /// Computes the absolute difference between `self` and `other`.
+    ///
+    /// This function always returns the correct answer without overflow or
+    /// panics by returning an unsigned integer.
+    ///
+    /// # Examples
+    ///
+    /// Basic usage:
+    ///
+    /// ```
+    /// # use ethnum::{I256, U256};
+    /// assert_eq!(I256::new(100).abs_diff(I256::new(80)), 20);
+    /// assert_eq!(I256::new(100).abs_diff(I256::new(110)), 10);
+    /// assert_eq!(I256::new(-100).abs_diff(I256::new(80)), 180);
+    /// assert_eq!(I256::new(-100).abs_diff(I256::new(-120)), 20);
+    /// assert_eq!(I256::MIN.abs_diff(I256::MAX), U256::MAX);
+    /// assert_eq!(I256::MAX.abs_diff(I256::MIN), U256::MAX);
+    /// ```
+    #[must_use = "this returns the result of the operation, \
+                  without modifying the original"]
+    #[inline]
+    pub fn abs_diff(self, other: Self) -> U256 {
+        if self < other {
+            // Converting a non-negative x from signed to unsigned by using
+            // `x as U` is left unchanged, but a negative x is converted
+            // to value x + 2^N. Thus if `s` and `o` are binary variables
+            // respectively indicating whether `self` and `other` are
+            // negative, we are computing the mathematical value:
+            //
+            //    (other + o*2^N) - (self + s*2^N)    mod  2^N
+            //    other - self + (o-s)*2^N            mod  2^N
+            //    other - self                        mod  2^N
+            //
+            // Finally, taking the mod 2^N of the mathematical value of
+            // `other - self` does not change it as it already is
+            // in the range [0, 2^N).
+            other.as_u256().wrapping_sub(self.as_u256())
+        } else {
+            self.as_u256().wrapping_sub(other.as_u256())
+        }
     }
 
     /// Calculates the multiplication of `self` and `rhs`.
