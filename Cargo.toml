@@ -31,7 +31,7 @@ macros = ["ethnum-macros"]
 
 [dependencies]
 ethnum-intrinsics = { version = "1", path = "intrinsics", optional = true }
-cosmwasm-std = { git = "https://github.com/scrtlabs/cosmwasm", branch = "secret", optional = true }
+cosmwasm-std = { git = "https://github.com/scrtlabs/cosmwasm", package = "secret-cosmwasm-std", branch = "secret", optional = true }
 ethnum-macros = { version = "1", path = "macros", optional = true }
 serde = { version = "1", default-features = false, optional = true }
 borsh = { version = "0.9.3" }
