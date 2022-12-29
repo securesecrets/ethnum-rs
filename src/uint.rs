@@ -12,9 +12,8 @@ pub use self::convert::AsU256;
 use crate::I256;
 use borsh::{BorshDeserialize, BorshSerialize};
 use core::num::ParseIntError;
-use cosmwasm_std::Uint128;
 #[cfg(feature = "cosmwasm")]
-use cosmwasm_std::{Decimal256, Uint256};
+use cosmwasm_std::{Decimal256, Uint128, Uint256, Uint64};
 use serde::{Deserialize, Serialize};
 
 /// A 256-bit unsigned integer type.
@@ -48,6 +47,21 @@ impl From<Uint128> for U256 {
 impl Into<Uint128> for U256 {
     fn into(self) -> Uint128 {
         Uint128::new(self.as_u128())
+    }
+}
+
+#[cfg(feature = "cosmwasm")]
+impl From<Uint64> for U256 {
+    fn from(u: Uint64) -> Self {
+        U256::from(u.u64())
+    }
+}
+
+#[cfg(feature = "cosmwasm")]
+#[allow(clippy::from_over_into)]
+impl Into<Uint64> for U256 {
+    fn into(self) -> Uint64 {
+        Uint64::new(self.as_u64())
     }
 }
 
