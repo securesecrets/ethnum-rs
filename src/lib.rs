@@ -5,7 +5,7 @@
 //! primitive integer types.
 
 #![deny(missing_docs)]
-#![no_std]
+#![cfg_attr(not(feature = "std"), no_std)]
 
 #[cfg(test)]
 extern crate alloc;
@@ -31,6 +31,8 @@ mod fmt;
 mod int;
 pub mod intrinsics;
 mod parse;
+#[cfg(feature = "cosmos")]
+pub mod cosmos;
 #[cfg(feature = "original-serde")]
 pub mod serde;
 mod uint;
@@ -133,12 +135,12 @@ pub mod internal {
 
 /// Convenience re-export of 256-integer types and as- conversion traits.
 pub mod prelude {
-    pub use crate::{AsI256, AsU256, DecimalU256, I256, U256};
+    pub use crate::{AsI256, AsU256, I256, U256};
 }
 
 pub use crate::{
     int::{AsI256, I256},
-    uint::{AsU256, DecimalU256, U256},
+    uint::{AsU256, U256},
 };
 
 /// A 256-bit signed integer type.

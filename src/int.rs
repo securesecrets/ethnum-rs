@@ -10,9 +10,7 @@ mod parse;
 
 pub use self::convert::AsI256;
 use crate::uint::U256;
-use borsh::{BorshDeserialize, BorshSerialize};
 use core::num::ParseIntError;
-use serde::{Deserialize, Serialize};
 
 /// A 256-bit signed integer type.
 #[derive(
@@ -22,11 +20,10 @@ use serde::{Deserialize, Serialize};
     Eq,
     Hash,
     PartialEq,
-    Serialize,
-    Deserialize,
-    BorshDeserialize,
-    BorshSerialize,
 )]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "borsh", derive(borsh::BorshSerialize, borsh::BorshDeserialize))]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(transparent)]
 pub struct I256(pub [i128; 2]);
 

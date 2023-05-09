@@ -10,11 +10,7 @@ mod parse;
 
 pub use self::convert::AsU256;
 use crate::I256;
-use borsh::{BorshDeserialize, BorshSerialize};
 use core::num::ParseIntError;
-#[cfg(feature = "cosmwasm")]
-use cosmwasm_std::{Decimal256, Uint128, Uint256, Uint64};
-use serde::{Deserialize, Serialize};
 
 /// A 256-bit unsigned integer type.
 #[derive(
@@ -24,76 +20,12 @@ use serde::{Deserialize, Serialize};
     Eq,
     Hash,
     PartialEq,
-    Serialize,
-    Deserialize,
-    BorshDeserialize,
-    BorshSerialize,
 )]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "borsh", derive(borsh::BorshSerialize, borsh::BorshDeserialize))]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(transparent)]
 pub struct U256(pub [u128; 2]);
-
-/// Type alias for U256.
-pub type DecimalU256 = U256;
-
-#[cfg(feature = "cosmwasm")]
-impl From<Uint128> for U256 {
-    fn from(u: Uint128) -> Self {
-        U256::new(u.u128())
-    }
-}
-
-#[cfg(feature = "cosmwasm")]
-#[allow(clippy::from_over_into)]
-impl Into<Uint128> for U256 {
-    fn into(self) -> Uint128 {
-        Uint128::new(self.as_u128())
-    }
-}
-
-#[cfg(feature = "cosmwasm")]
-impl From<Uint64> for U256 {
-    fn from(u: Uint64) -> Self {
-        U256::from(u.u64())
-    }
-}
-
-#[cfg(feature = "cosmwasm")]
-#[allow(clippy::from_over_into)]
-impl Into<Uint64> for U256 {
-    fn into(self) -> Uint64 {
-        Uint64::new(self.as_u64())
-    }
-}
-
-#[cfg(feature = "cosmwasm")]
-#[allow(clippy::from_over_into)]
-impl Into<Uint256> for U256 {
-    fn into(self) -> Uint256 {
-        Uint256::from_be_bytes(self.to_be_bytes())
-    }
-}
-
-#[cfg(feature = "cosmwasm")]
-impl From<Uint256> for U256 {
-    fn from(u: Uint256) -> Self {
-        U256::from_be_bytes(u.to_be_bytes())
-    }
-}
-
-#[cfg(feature = "cosmwasm")]
-#[allow(clippy::from_over_into)]
-impl Into<Decimal256> for U256 {
-    fn into(self) -> Decimal256 {
-        Decimal256::new(Uint256::from_be_bytes(self.to_be_bytes()))
-    }
-}
-
-#[cfg(feature = "cosmwasm")]
-impl From<Decimal256> for U256 {
-    fn from(u: Decimal256) -> Self {
-        U256::from_be_bytes(u.atomics().to_be_bytes())
-    }
-}
 
 impl U256 {
     /// The additive identity for this integer type, i.e. `0`.
