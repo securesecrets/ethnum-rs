@@ -1,4 +1,4 @@
-//! Module that implements the RangeBounds trait for compatibility with libraries such as proptest.
+//! Module that implements the RangeBounds trait.
 
 use std::ops::RangeBounds;
 use crate::{U256, I256};

@@ -29,12 +29,9 @@ mod fmt;
 mod int;
 pub mod intrinsics;
 mod parse;
-#[cfg(feature = "cosmos")]
-pub mod cosmos;
 #[cfg(feature = "original-serde")]
 pub mod serde;
-#[cfg(feature = "std")]
-mod std;
+mod support;
 mod uint;
 
 /// Macro for 256-bit signed integer literal.
