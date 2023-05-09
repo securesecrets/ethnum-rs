@@ -33,6 +33,8 @@ mod parse;
 pub mod cosmos;
 #[cfg(feature = "original-serde")]
 pub mod serde;
+#[cfg(feature = "std")]
+mod std;
 mod uint;
 
 /// Macro for 256-bit signed integer literal.
