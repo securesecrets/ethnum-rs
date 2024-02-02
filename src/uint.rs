@@ -22,7 +22,7 @@ use core::num::ParseIntError;
     PartialEq,
 )]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "borsh", derive(borsh::BorshSerialize, borsh::BorshDeserialize))]
+#[cfg_attr(feature = "borsh", derive(borsh_derive::BorshSerialize, borsh_derive::BorshDeserialize))]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(transparent)]
 pub struct U256(pub [u128; 2]);
